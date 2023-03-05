@@ -14,7 +14,7 @@ class MovieDetailsPage extends StatelessWidget {
           color: const Color(0xFF564CA3),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Row(
@@ -55,7 +55,7 @@ class MovieDetailsPage extends StatelessWidget {
                 child: const Center(
                     child: Text(
                   "Get Tickets",
-                  style: const TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 18),
                 )),
               ),
               const SizedBox(
@@ -70,9 +70,9 @@ class MovieDetailsPage extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.play_arrow),
-                    const Text(
+                  children: const [
+                    Icon(Icons.play_arrow),
+                    Text(
                       "Watch Trailer",
                       style: TextStyle(fontSize: 18),
                     ),
