@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_db/ui/movie_list_page.dart';
-
-import 'resources/app_theme_data.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_db/ui/bottom_nav_page.dart';
 
 class MovieDbApp extends StatefulWidget {
   const MovieDbApp({Key? key}) : super(key: key);
@@ -29,8 +28,25 @@ class _MovieDbAppState extends State<MovieDbApp> with WidgetsBindingObserver {
       title: 'TMDB',
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (BuildContext context) => "TMDB",
-      theme: appThemeData,
-      home: const MovieListPage(),
+      theme: ThemeData.dark().copyWith(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF2E2739),
+          foregroundColor: Color(0xFF2E2739),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
+        primaryColor: const Color(0xFF2E2739),
+        primaryColorLight: const Color(0xFF564CA3),
+        primaryTextTheme: GoogleFonts.poppinsTextTheme(),
+        scaffoldBackgroundColor: const Color(0xFFEFEFEF),
+        iconTheme: const IconThemeData(color: Colors.white),
+        primaryIconTheme: const IconThemeData(color: Color(0xFF827D88)),
+        pageTransitionsTheme: const PageTransitionsTheme(builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
+      ),
+      home: const BottomNavPage(),
     );
   }
 }

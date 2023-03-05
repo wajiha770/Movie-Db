@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/adapter.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:movie_db/domain/config/config.dart';
 
 class BaseAPI {
-  Future<Response?> postRequest(
-      String url, FormData? formData, String header) async {
+  Future<Response?> getRequest(String url, String? urlExtension) async {
     Dio dio = Dio();
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
@@ -15,61 +14,24 @@ class BaseAPI {
           (X509Certificate cert, String host, int port) => true;
       return client;
     };
-    final prefs = await SharedPreferences.getInstance();
-    //TODO set api key
-    var token = "";
+    var apiKey = Config.apiKey;
     if (kDebugMode) {
-      print("Url: $url");
-      print("Header: Authorization: $header $token");
-      print("body: ${formData?.fields}");
+      print("Url: $url/$urlExtension");
+      print("Query Params: 'api_key: $apiKey'");
+    }
+    String finalUrl = url;
+    if (urlExtension != null) {
+      finalUrl = '$url/$urlExtension';
     }
 
     Response? response;
     try {
-      response = await dio.post(url,
-          data: formData,
-          options: Options(
-            headers: {
-              "Accept": "application/json",
-              "Authorization": "$header $token"
-            },
-          ));
-    } catch (e) {
-      response = null;
-      if (kDebugMode) {
-        print("error: $e");
-      }
-    }
-    if (kDebugMode) {
-      print("Response: $response");
-    }
-    return response;
-  }
-
-  Future<Response?> getRequest(String url, String header) async {
-    Dio dio = Dio();
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
-    final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString("speed_dating_app_token");
-    if (kDebugMode) {
-      print("Url: $url");
-      print("Header: Authorization: $header $token");
-    }
-
-    Response? response;
-    try {
-      response = await dio.get(url,
-          options: Options(
-            headers: {
-              "Accept": "application/json",
-              "Authorization": "$header $token"
-            },
-          ));
+      response = await dio.get(
+        finalUrl,
+        queryParameters: {
+          "api_key": apiKey,
+        },
+      );
     } catch (e) {
       response = null;
       if (kDebugMode) {
